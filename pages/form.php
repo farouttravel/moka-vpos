@@ -1,6 +1,6 @@
 <?php /** @var array $pageData */ ?>
 
-<form method="post" class="form-horizontal" action="/?p=Review">
+<form method="post" class="form-horizontal" action="/?p=review">
     <h2>
         TXN Type: <?= array_key_exists('t', $_GET) ? $_GET['t'] : ""; ?>
     </h2>

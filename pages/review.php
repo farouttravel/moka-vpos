@@ -2,7 +2,7 @@
 
 <h2>Review</h2>
 
-<form id="form-review" method="post" action="/?p=post">
+<form id="form-review" method="post" action="<?= $pageData['action'] ?>">
     <table class="table table-hover">
         <tr>
             <th>Data Name</th>
@@ -14,7 +14,7 @@
             <input type="hidden" name="CheckKey" value="<?= $pageData['CheckKey'] ?>"/>
         </tr>
         <?php foreach ($_POST['vpos']['fields'] as $name => $value) : ?>
-            <?php if (!is_null($value)) : ?>
+            <?php if (!is_null($value) && $value != '') : ?>
                 <tr>
                     <td><?= $name ?></td>
                     <td><?= $value ?></td>
