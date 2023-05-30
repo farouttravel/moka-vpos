@@ -24,9 +24,14 @@ Create a `.env` file from blueprint:
 ```shell
 cp .env.example .env
 ```
+
+Install dependencies:
+```shell
+valet composer install
+```
 Then please edit your `.env` file and set the necessary credentials. 
 Now if everything went well and, your app is up and running, you can visit [https://moka-vpos.test](https://moka-vpos.test)
-and start testing.
+and start testing. To further read you can visit [moka's docs.](https://developer.moka.com/en/)
 
 ## Disclaimer
 This script is only for testing and exploring the API of the services provided by the bank, only use it for
