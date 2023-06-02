@@ -137,29 +137,35 @@ class Core
                     $response = $client->request(
                         'POST',
                         env('DIRECT_PAYMENT_FORM_ACTION'),
-                        ['json' => [
-                            'PaymentDealerAuthentication' => [
-                                'DealerCode' => $_POST['DealerCode'],
-                                'Username' => $_POST['Username'],
-                                'Password' => $_POST['Password'],
-                                'CheckKey' => $_POST['CheckKey']
-                            ],
-                            'PaymentDealerRequest' => [
-                                'CardHolderFullName' => $_POST['CardHolderFullName'],
-                                'CardNumber' => $_POST['CardNumber'],
-                                'ExpMonth' => $_POST['ExpMonth'],
-                                'ExpYear' => $_POST['ExpYear'],
-                                'CvcNumber' => $_POST['CvcNumber'],
-                                'Amount' => $_POST['Amount'],
-                                'Currency' => $_POST['Currency'],
-                                'ClientIP' => $_POST['ClientIP'],
-                                'OtherTrxCode' => $_POST['OtherTrxCode'],
-                                'IsPoolPayment' => $_POST['IsPoolPayment'],
-                                'IsTokenized' => $_POST['IsTokenized'],
-                                'Software' => $_POST['Software'],
-                                'IsPreAuth' => $_POST['IsPreAuth']
-                            ]
-                        ]]);
+                        [
+                            'headers' => ['Content-Type' => 'application/json'],
+                            'body' => json_encode(
+                                [
+                                    'PaymentDealerAuthentication' => [
+                                        'DealerCode' => $_POST['DealerCode'],
+                                        'Username' => $_POST['Username'],
+                                        'Password' => $_POST['Password'],
+                                        'CheckKey' => $_POST['CheckKey']
+                                    ],
+                                    'PaymentDealerRequest' => [
+                                        'CardHolderFullName' => $_POST['CardHolderFullName'],
+                                        'CardNumber' => $_POST['CardNumber'],
+                                        'ExpMonth' => $_POST['ExpMonth'],
+                                        'ExpYear' => $_POST['ExpYear'],
+                                        'CvcNumber' => $_POST['CvcNumber'],
+                                        'Amount' => $_POST['Amount'],
+                                        'Currency' => $_POST['Currency'],
+                                        'ClientIP' => $_POST['ClientIP'],
+                                        'OtherTrxCode' => $_POST['OtherTrxCode'],
+                                        'IsPoolPayment' => $_POST['IsPoolPayment'],
+                                        'IsTokenized' => $_POST['IsTokenized'],
+                                        'Software' => $_POST['Software'],
+                                        'IsPreAuth' => $_POST['IsPreAuth']
+                                    ]
+                                ],
+                                JSON_NUMERIC_CHECK
+                            )
+                        ]);
 
                     $result = json_decode($response->getBody()->getContents());
 
