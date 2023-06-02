@@ -30,9 +30,12 @@ class Core
 
     function __construct()
     {
-        $this->pageName = array_key_exists('isSuccessful', $_POST) ?
-            self::PAGE_NAME_RESULT :
-            self::pageParameter();
+        $this->pageName =
+            array_key_exists('tx', $_GET) &&
+            array_key_exists('hashValue', $_POST) &&
+            $this->checkWebPosHash() ?
+                self::PAGE_NAME_RESULT :
+                self::pageParameter();
     }
 
     function getPageName()
@@ -74,13 +77,27 @@ class Core
         return isset($_GET['p']) ? $_GET['p'] : self::PAGE_NAME_HOMEPAGE;
     }
 
+    private function checkWebPosHash($clearDb = false)
+    {
+        $jsonDb = new \Jajo\JSONDB(__DIR__);
+
+        $codeForHash = $jsonDb->select('codeForHash')
+            ->from('db.json')
+            ->get();
+
+        if ($clearDb)
+            $jsonDb->update(['codeForHash' => ''])
+                ->from('db.json')
+                ->trigger();
+
+        return hash(
+                'sha256',
+                $codeForHash[0]['codeForHash'] . 'T'
+            ) === $_POST['hashValue'];
+    }
+
     private function loadPageData()
     {
-        if (
-            !array_key_exists('p', $_GET) &&
-            !array_key_exists('isSuccessful', $_POST)
-        ) return null;
-
         switch ($this->getPageName()) {
             case 'form':
                 $type = new \Vpos\Type();
@@ -161,8 +178,9 @@ class Core
 
                 return [
                     'success' =>
-                        array_key_exists('isSuccessful', $_POST) &&
-                        $_POST["isSuccessful"] == "True",
+                        array_key_exists('tx', $_GET) &&
+                        array_key_exists('hashValue', $_POST) &&
+                        $this->checkWebPosHash(true),
                     'errorMessage' => $_POST['resultMessage']
                 ];
             default:
